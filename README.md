@@ -16,35 +16,37 @@ connector的实现，主要特性如下：
 ## 使用方法
 
 1. 引入依赖
-   maven:
-
+maven:
 ```xml
-
 <dependency>
-    <groupId>com.github.davidfantasy</groupId>
-    <artifactId>mybatis-plus-generator-ui</artifactId>
-    <version>2.0.5</version>
-    <scope>test</scope>
+   <groupId>com.github.davidfantasy.flink.connector.mqtt</groupId>
+   <artifactId>flink-connector-mqtt</artifactId>
+   <version>1.0.0</version>
 </dependency>
 ```
-
 gradle:
-
+```gradle
+implementation 'com.github.davidfantasy.flink.connector.mqtt:flink-connector-mqtt:1.0.0
+```
 2. 示例代码：
 
 ```java
-  public static void main(String[]args)throws Exception{
-        StreamExecutionEnvironment env=StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(1);
-        MqttProperties mqttProp=new MqttProperties();
-        mqttProp.setHost("broker.emqx.io");
-        mqttProp.setPort(1883);
+public class MqttSourceTest {
+
+   public static void main(String[] args) throws Exception {
+      StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+      env.setParallelism(1);
+      MqttProperties mqttProp = new MqttProperties();
+      mqttProp.setHost("broker.emqx.io");
+      mqttProp.setPort(1883);
 //        mqttProp.setUsername("");
 //        mqttProp.setPassword("");
-        List<MqttTopic> topics=new ArrayList<>();
-        topics.add(new MqttTopic("/flink-connector/mqtt/source/test",0));
-        var source=env.fromSource(new MqttSource(mqttProp,topics),WatermarkStrategy.noWatermarks(),"Mqtt Source");
-        source.map(v->v.getTopic()+":"+new String(v.getPayload())).print();
-        env.execute("MQTT Source Test");
-        }
+      List<MqttTopic> topics = new ArrayList<>();
+      topics.add(new MqttTopic("/flink-connector/mqtt/source/test", 0));
+      var source = env.fromSource(new MqttSource(mqttProp, topics), WatermarkStrategy.noWatermarks(), "Mqtt Source");
+      source.map(v -> v.getTopic() + ":" + new String(v.getPayload())).print();
+      env.execute("MQTT Source Test");
+   }
+
+}
 ```
