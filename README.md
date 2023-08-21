@@ -1,4 +1,4 @@
-## flink-mqtt-connector
+## flink-connector-mqtt
 
 基于flink最新的[FLIP-27](https://cwiki.apache.org/confluence/display/FLINK/FLIP-27%3A+Refactor+Source+Interface)架构对MQTT
 connector的实现，主要特性如下：
@@ -14,9 +14,7 @@ connector的实现，主要特性如下：
 - flink版本支持1.17.1及以上版本
 
 ## 使用方法
-
 1. 引入依赖
-maven:
 ```xml
 <dependency>
    <groupId>com.github.davidfantasy.flink.connector.mqtt</groupId>
@@ -24,12 +22,8 @@ maven:
    <version>1.0.0</version>
 </dependency>
 ```
-gradle:
-```gradle
-implementation 'com.github.davidfantasy.flink.connector.mqtt:flink-connector-mqtt:1.0.0
-```
-2. 示例代码：
 
+2. 示例代码：
 ```java
 public class MqttSourceTest {
 
