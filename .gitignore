@@ -6,7 +6,7 @@ build/
 gradle.properties
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
