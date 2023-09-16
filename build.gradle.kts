@@ -23,8 +23,10 @@ tasks.withType<Javadoc> {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("mavenJava"){
+            groupId = "com.github.davidfantasy"
             artifactId = "flink-connector-mqtt"
+            version = "1.1.0"
             from(components["java"])
             pom {
                 name.set("flink-connector-mqtt")
@@ -52,7 +54,7 @@ publishing {
     }
     repositories {
         maven {
-            name = "OSSRH"
+            name = "OSS"
             url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
                 username = findProperty("OSSRH_USERNAME") as String?
@@ -65,9 +67,6 @@ publishing {
 signing {
     sign(publishing.publications.getByName<MavenPublication>("mavenJava"))
 }
-
-group = "com.github.davidfantasy.flink.connector.mqtt"
-version = "1.0.0"
 
 repositories {
     maven { url = uri("https://maven.aliyun.com/repository/public") }
