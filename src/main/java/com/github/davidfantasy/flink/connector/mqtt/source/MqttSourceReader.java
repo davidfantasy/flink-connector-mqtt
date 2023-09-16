@@ -1,14 +1,14 @@
 package com.github.davidfantasy.flink.connector.mqtt.source;
 
-import com.github.davidfantasy.flink.connector.mqtt.MqttMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.connector.source.SourceReaderContext;
 import org.apache.flink.connector.base.source.reader.SingleThreadMultiplexSourceReaderBase;
+import org.apache.flink.table.data.RowData;
 
 import java.util.Map;
 
 @Slf4j
-public class MqttSourceReader<T> extends SingleThreadMultiplexSourceReaderBase<MqttMessage, MqttMessage, MqttSourceSplit, MqttSourceSplitState> {
+public class MqttSourceReader<T> extends SingleThreadMultiplexSourceReaderBase<RowData, RowData, MqttSourceSplit, MqttSourceSplitState> {
 
     public MqttSourceReader(SourceReaderContext context) {
         super(MqttSourceSplitReader::new, new MqttSourceRecordEmitter(), context.getConfiguration(), context);

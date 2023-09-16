@@ -83,13 +83,22 @@ val flinkVersion = "1.17.1" // flink版本
 dependencies {
     compileOnly("org.apache.flink:flink-java:$flinkVersion")
     compileOnly("org.apache.flink:flink-connector-base:$flinkVersion")
+    compileOnly("org.apache.flink:flink-table-common:$flinkVersion")
+    compileOnly("org.apache.flink:flink-table-api-java-bridge:$flinkVersion")
+    compileOnly("org.apache.flink:flink-table-planner_2.12:$flinkVersion")
+
+    implementation("org.apache.flink:flink-json:$flinkVersion")
     implementation("org.slf4j:slf4j-simple:1.7.25")
     implementation("org.projectlombok:lombok:1.18.26")
     implementation("com.hivemq:hivemq-mqtt-client:1.3.1")
     annotationProcessor("org.projectlombok:lombok:1.18.26")
+
     testImplementation("org.apache.flink:flink-clients:$flinkVersion")
     testImplementation("org.apache.flink:flink-java:$flinkVersion")
     testImplementation("org.apache.flink:flink-connector-base:$flinkVersion")
+    testImplementation("org.apache.flink:flink-table-common:$flinkVersion")
+    testImplementation("org.apache.flink:flink-table-api-java-bridge:$flinkVersion")
+    testImplementation("org.apache.flink:flink-table-planner_2.12:$flinkVersion")
 }
 
 tasks.test {

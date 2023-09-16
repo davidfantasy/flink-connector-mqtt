@@ -15,6 +15,8 @@ import org.apache.flink.connector.base.source.reader.RecordsWithSplitIds;
 import org.apache.flink.connector.base.source.reader.splitreader.SplitReader;
 import org.apache.flink.connector.base.source.reader.splitreader.SplitsAddition;
 import org.apache.flink.connector.base.source.reader.splitreader.SplitsChange;
+import org.apache.flink.table.data.RowData;
+import org.apache.flink.types.RowKind;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * 负责从分片中获取mqtt配置信息并初始化客户端进行读取
  */
 @Slf4j
-public class MqttSourceSplitReader implements SplitReader<MqttMessage, MqttSourceSplit> {
+public class MqttSourceSplitReader implements SplitReader<RowData, MqttSourceSplit> {
 
     private final List<MqttSourceSplit> splits;
     private final String MQTT_CLIENTID_PREFIX = "flink-mqtt-connector:";
@@ -37,6 +39,7 @@ public class MqttSourceSplitReader implements SplitReader<MqttMessage, MqttSourc
     private BlockingQueue<MqttMessage> messageQueue;
     private final DebounceTask warningPrinter;
     private List<Mqtt3AsyncClient> mqttClients;
+
 
     public MqttSourceSplitReader() {
         this.splits = new ArrayList<>();
@@ -47,14 +50,14 @@ public class MqttSourceSplitReader implements SplitReader<MqttMessage, MqttSourc
     }
 
     @Override
-    public RecordsWithSplitIds<MqttMessage> fetch() throws IOException {
+    public RecordsWithSplitIds<RowData> fetch() throws IOException {
         if (this.splits.size() == 0) {
             return new MqttRecords(null, null);
         }
         initMqttClient();
         String spilitId = this.splits.get(0).getId();
         try {
-            List<MqttMessage> datas = null;
+            List<RowData> datas = null;
             var firstMsg = messageQueue.take();
             if (messageQueue.isEmpty()) {
                 datas = Collections.singletonList(firstMsg);
@@ -152,7 +155,7 @@ public class MqttSourceSplitReader implements SplitReader<MqttMessage, MqttSourc
     private void handleReceivedMsg(Mqtt3Publish msg) {
         var mqttMsg = new MqttMessage(msg.getTopic().toString(),
                 msg.getQos().getCode(),
-                msg.getPayloadAsBytes());
+                msg.getPayloadAsBytes(), RowKind.INSERT);
         if (messageQueue.size() > MSG_CACHE_LIMIT) {
             warningPrinter.doTask();
             return;

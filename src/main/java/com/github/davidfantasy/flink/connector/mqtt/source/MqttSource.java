@@ -1,14 +1,14 @@
 package com.github.davidfantasy.flink.connector.mqtt.source;
 
-import com.github.davidfantasy.flink.connector.mqtt.MqttMessage;
 import com.github.davidfantasy.flink.connector.mqtt.MqttProperties;
 import com.github.davidfantasy.flink.connector.mqtt.MqttTopic;
 import org.apache.flink.api.connector.source.*;
 import org.apache.flink.core.io.SimpleVersionedSerializer;
+import org.apache.flink.table.data.RowData;
 
 import java.util.List;
 
-public class MqttSource implements Source<MqttMessage, MqttSourceSplit, MqttSplitsCheckpoint> {
+public class MqttSource implements Source<RowData, MqttSourceSplit, MqttSplitsCheckpoint> {
 
     private MqttProperties mqttProperties;
 
@@ -48,7 +48,7 @@ public class MqttSource implements Source<MqttMessage, MqttSourceSplit, MqttSpli
     }
 
     @Override
-    public SourceReader<MqttMessage, MqttSourceSplit> createReader(SourceReaderContext readerContext) throws Exception {
+    public SourceReader<RowData, MqttSourceSplit> createReader(SourceReaderContext readerContext) throws Exception {
         return new MqttSourceReader(readerContext);
     }
 

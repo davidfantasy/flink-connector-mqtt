@@ -2,6 +2,7 @@ package com.github.davidfantasy.flink.connector.mqtt.source;
 
 import com.github.davidfantasy.flink.connector.mqtt.MqttMessage;
 import org.apache.flink.connector.base.source.reader.RecordsWithSplitIds;
+import org.apache.flink.table.data.RowData;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -11,13 +12,13 @@ import java.util.Set;
 /**
  * 对MqttSourceSplitReader每次fetch的结果进行封装
  */
-public class MqttRecords implements RecordsWithSplitIds<MqttMessage> {
+public class MqttRecords implements RecordsWithSplitIds<RowData> {
 
     private String currentSplitId;
 
-    private final Iterator<MqttMessage> fetchedDatas;
+    private final Iterator<RowData> fetchedDatas;
 
-    public MqttRecords(String currentSplitId, Iterator<MqttMessage> fetchedDatas) {
+    public MqttRecords(String currentSplitId, Iterator<RowData> fetchedDatas) {
         this.currentSplitId = currentSplitId;
         this.fetchedDatas = fetchedDatas;
     }
@@ -34,7 +35,7 @@ public class MqttRecords implements RecordsWithSplitIds<MqttMessage> {
 
     @Nullable
     @Override
-    public MqttMessage nextRecordFromSplit() {
+    public RowData nextRecordFromSplit() {
         if (fetchedDatas == null) {
             return null;
         }
