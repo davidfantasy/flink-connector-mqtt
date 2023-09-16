@@ -14,7 +14,7 @@ public class MqttTableSqlTest {
                 "  code STRING\n" +
                 ") WITH (\n" +
                 "   'connector' = 'mqtt',\n" +
-                "   'server' = 'broker.emqx.io',\n" +
+                "   'server' = 'broker-cn.emqx.io',\n" +
                 "   'port' = '1883', \n" +
                 "   'topic' = '/flink-connector/mqtt/source/test'\n" +
                 ")";

@@ -22,7 +22,7 @@ public class MqttSourceTest {
         var source = env.fromSource(new MqttSource(mqttProp, topics), WatermarkStrategy.noWatermarks(), "Mqtt Source");
         source.map(v -> {
             var msg = (MqttMessage) v;
-            return msg.getTopic() + ":" + msg.getString(0);
+            return msg.getTopic() + ":" + new String(msg.getPayload());
         }).print();
         env.execute("MQTT Source Test");
     }
